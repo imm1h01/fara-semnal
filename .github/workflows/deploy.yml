@@ -2,7 +2,7 @@ name: Deploy Vite site to Pages
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master" ]   # sau "main" dacă repo-ul tău folosește main
   workflow_dispatch:
 
 permissions:
@@ -14,14 +14,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Ia codul din repo
       - uses: actions/checkout@v4
+
+      # Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # Instalează dependențe
       - run: npm ci
-      - run: npm run build
 
+      # Build Vite cu variabile de mediu
+      - run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_DATABASE_URL: ${{ secrets.VITE_FIREBASE_DATABASE_URL }}
+
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          VITE_GEMINI_MODEL: ${{ secrets.VITE_GEMINI_MODEL }}
+
+      # Pregătește folderul dist pentru GitHub Pages
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
