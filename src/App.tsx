@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -58,71 +58,21 @@ const App = () => (
         <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <HashRouter>
                 <AuthProvider>
                     <Routes>
                         <Route path="/" element={<Index />} />
-                        <Route
-                            path="/auth"
-                            element={
-                                <PublicRoute>
-                                    <Auth />
-                                </PublicRoute>
-                            }
-                        />
-                        <Route
-                            path="/dashboard"
-                            element={
-                                <ProtectedRoute>
-                                    <Dashboard />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/all-events"
-                            element={
-                                <ProtectedRoute>
-                                    <AllEvents />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/create-event"
-                            element={
-                                <ProtectedRoute>
-                                    <CreateEvent />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/event/:id"
-                            element={
-                                <ProtectedRoute>
-                                    <EventDetails />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/profile"
-                            element={
-                                <ProtectedRoute>
-                                    <Profile />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/edit-event/:id"
-                            element={
-                                <ProtectedRoute>
-                                    <EditEvent />
-                                </ProtectedRoute>
-                            }
-                        />
-                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                        <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
+                        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                        <Route path="/all-events" element={<ProtectedRoute><AllEvents /></ProtectedRoute>} />
+                        <Route path="/create-event" element={<ProtectedRoute><CreateEvent /></ProtectedRoute>} />
+                        <Route path="/event/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
+                        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                        <Route path="/edit-event/:id" element={<ProtectedRoute><EditEvent /></ProtectedRoute>} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </AuthProvider>
-            </BrowserRouter>
+            </HashRouter>
         </TooltipProvider>
     </QueryClientProvider>
 );
